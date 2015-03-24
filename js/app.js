@@ -2,13 +2,52 @@
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.x = this.getRandomArbitrary(-1000,0);
-    this.y = this.getRandomArbitrary(80,250);
+    this.setInitialPos();
     this.speed = 100.0;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+};
+
+Enemy.prototype.setInitialPos = function () {
+    // body...
+    var enemyLength = 100;
+    var overlaps = true;
+    console.log(allEnemies.length);
+    if (allEnemies.length > 0){
+        while(overlaps){
+            overlaps = false;
+            console.log("dentro while" + overlaps);
+            var posXi = parseInt(this.getRandomArbitrary(boardPosX,0));
+            var posXf = posXi - enemyLength;
+            for (enemy in allEnemies){
+                var XiEnemy = allEnemies[enemy].x;
+                var XfEnemy = XiEnemy - enemyLength;
+                if (
+                    (posXi <=  XiEnemy && posXi >= XfEnemy) || 
+                    (posXf <=  XiEnemy && posXf >= XfEnemy)
+                    ){
+                        overlaps = true;
+                        console.log("OVERLAP!!");
+                        break;
+                }
+                console.log("dentro for" + overlaps);
+            }
+            console.log("fora do for" + overlaps);
+        }
+            console.log("fora do while" + overlaps);
+            this.x = posXi;
+            console.log("if x:" + this.x);
+    }else {
+        this.x = parseInt(this.getRandomArbitrary(boardPosX,0));
+        console.log("else x: " + this.x);
+    }
+
+    this.y = parseInt(this.getRandomArbitrary(1,4))*75;
+    console.log("else y: " + this.y);
+
+
 };
 
 /**
@@ -89,12 +128,14 @@ Player.prototype.avoidWalls =  function (coord,step){
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var maxEnemies = 5;
+var maxEnemies = 9;
 var allEnemies = [];
+var boardPosX = -1300;
 
 for (var i=0; i < maxEnemies; i++){
     allEnemies.push(new Enemy());
 }
+console.log(allEnemies);
 
 var player = new Player();
 
