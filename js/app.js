@@ -64,6 +64,11 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += 1 * dt * this.speed;
+    
+    if (this.x > 606){
+        this.setInitialPos();
+        console.log("New Pos for obj " + this + " >> " + this.x);
+    }
 };
 
 // Draw the enemy on the screen, required method for game
