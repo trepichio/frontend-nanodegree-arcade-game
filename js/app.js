@@ -9,14 +9,14 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-}
+};
 
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
  */
 Enemy.prototype.getRandomArbitrary = function (min, max) {
     return Math.random() * (max - min) + min;
-}
+};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -25,12 +25,12 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += 1 * dt * this.speed;
-}
+};
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -39,18 +39,52 @@ var Player = function(){
     this.x = 0;
     this.y = 400;
     this.sprite = 'images/char-boy.png';
-}
+};
 
 Player.prototype.update = function (pos) {
     // body...
     this.x;
     this.y; 
-}
+};
 
 Player.prototype.render = function () {
     // body...
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
+
+Player.prototype.handleInput = function(keyCode) {
+    // body...
+    switch(keyCode){
+        case 'left':
+                    this.avoidWalls('x', -50);
+                    break;
+        case 'up':
+                    this.avoidWalls('y', -50);
+                    break;
+        case 'right':
+                    this.avoidWalls('x', 50);
+                    break;
+        case 'down':
+                    this.avoidWalls('y', 50);
+                    break;
+    }
+};
+
+Player.prototype.avoidWalls =  function (coord,step){
+    var pos = this[coord] + step;
+    switch(coord){
+        case 'x':  if (pos >= 0 && pos <= 400){
+                        this[coord] = pos;
+                    }
+                    break;
+        case 'y':  if (pos >= 0 && pos <= 430){
+                        this[coord] = pos;
+                    }
+                    break;            
+    }
+   
+
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
