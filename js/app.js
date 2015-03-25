@@ -98,18 +98,20 @@ Player.prototype.render = function () {
 
 Player.prototype.handleInput = function(keyCode) {
     // body...
+    var stepCol = 100;
+    var stepRow = 80;
     switch(keyCode){
         case 'left':
-                    this.avoidWalls('x', -50);
+                    this.avoidWalls('x', -stepCol);
                     break;
         case 'up':
-                    this.avoidWalls('y', -50);
+                    this.avoidWalls('y', -stepRow);
                     break;
         case 'right':
-                    this.avoidWalls('x', 50);
+                    this.avoidWalls('x', stepCol);
                     break;
         case 'down':
-                    this.avoidWalls('y', 50);
+                    this.avoidWalls('y', stepRow);
                     break;
     }
 };
@@ -121,13 +123,11 @@ Player.prototype.avoidWalls =  function (coord,step){
                         this[coord] = pos;
                     }
                     break;
-        case 'y':  if (pos >= 0 && pos <= 430){
+        case 'y':  if (pos >= -35 && pos <= 400){
                         this[coord] = pos;
                     }
                     break;            
     }
-   
-
 };
 
 // Now instantiate your objects.
