@@ -12,50 +12,45 @@ var Enemy = function() {
 
 Enemy.prototype.setInitialPos = function () {
     // body...
-    var enemyLength = 100;
-    var overlaps = true;
-    console.log(allEnemies.length);
-    if (allEnemies.length > 0){
-        while(overlaps){
-            overlaps = false;
-            console.log("dentro while" + overlaps);
-            var posXi = parseInt(this.getRandomArbitrary(boardPosX,0));
-            var posXf = posXi - enemyLength;
-            for (enemy in allEnemies){
-                var XiEnemy = allEnemies[enemy].x;
-                var XfEnemy = XiEnemy - enemyLength;
-                if (
-                    (posXi <=  XiEnemy && posXi >= XfEnemy) || 
-                    (posXf <=  XiEnemy && posXf >= XfEnemy)
-                    ){
-                        overlaps = true;
-                        console.log("OVERLAP!!");
-                        break;
-                }
-                console.log("dentro for" + overlaps);
-            }
-            console.log("fora do for" + overlaps);
-        }
-            console.log("fora do while" + overlaps);
-            this.x = posXi;
-            console.log("if x:" + this.x);
-    }else {
-        this.x = parseInt(this.getRandomArbitrary(boardPosX,0));
-        console.log("else x: " + this.x);
-    }
-
-    this.y = parseInt(this.getRandomArbitrary(1,4))*75;
-    console.log("else y: " + this.y);
-
+    this.y = random_number(1,4)*80-10;
+    this.x = aPosX.pop();
 
 };
 
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
  */
-Enemy.prototype.getRandomArbitrary = function (min, max) {
-    return Math.random() * (max - min) + min;
+function random_number(min, max) {
+    return parseInt(Math.random() * (max - min) + min);
 };
+
+// CREATE AND FILL NUMBER ARRAY WITH UNIQUE RANDOM NUMBERS
+//FOR POSITION 'X' FOR THE ENEMY OBJECTS
+function create_unique_random_array(num_elements,min,max) {
+
+    var temp, nums = new Array;
+
+    for (var element=0; element<num_elements; element++) {
+
+        //IMPORTANT: DON'T FORGET THE SEMI-COLON AT THE END
+        while((temp=number_found(random_number(min,max)*100,nums))==-1);
+        nums[element] = temp;
+    }
+
+    return (nums);
+}
+
+function number_found (random_number,number_array) {
+
+    for (var element=0; element<number_array.length; element++) {
+
+        if (random_number==number_array[element]) {
+            return (-1);
+    }
+   }
+
+    return (random_number);
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -63,11 +58,18 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += 1 * dt * this.speed;
+    this.x += parseInt(1 * dt * this.speed);
     
     if (this.x > 606){
-        this.setInitialPos();
-        console.log("New Pos for obj " + this + " >> " + this.x);
+        var x = random_number(boardMinX,boardMaxX)*100;
+        var oEnemies = [];
+
+        for (var i = allEnemies.length - 1; i >= 0; i--) {
+                    oEnemies = allEnemies[i].x;
+                };
+        this.x = number_found(x,oEnemies);
+        this.speed = random_number(1,7)*100;
+        console.log("New Pos for obj " + this + " >> " + "x: " + this.x + " y: " + this.y);
     }
 };
 
@@ -142,7 +144,10 @@ Player.prototype.reset = function(){
 // Place the player object in a variable called player
 var maxEnemies = 9;
 var allEnemies = [];
-var boardPosX = -1300;
+var boardMaxX = -3*maxEnemies;
+var boardMinX = -1;
+// CREATE AND FILL NUMBER ARRAY WITH UNIQUE RANDOM NUMBERS
+var aPosX = create_unique_random_array(maxEnemies,boardMinX,boardMaxX);
 
 for (var i=0; i < maxEnemies; i++){
     allEnemies.push(new Enemy());
