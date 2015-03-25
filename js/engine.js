@@ -80,7 +80,17 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+    }
+
+    /* This is called by the update function  and loops through all of the
+     * objects within your allEnemies array as defined in app.js and calls
+     * their checkCollisions() methods. This method focus purely on checking player's position on board (x,y) against to each enemy object's position.
+     */
+    function checkCollisions(){
+        allEnemies.forEach(function(enemy) {
+            enemy.checkCollisions(player);
+        });
     }
 
     /* This is called by the update function  and loops through all of the

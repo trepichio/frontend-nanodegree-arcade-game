@@ -73,6 +73,17 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
+//This method focus on verifying if the enemy object
+//has collided against player.
+Enemy.prototype.checkCollisions = function (obj) {
+    // body...
+         if ((this.y == obj.y + 15) && 
+            (obj.x >= this.x - 75 && 
+                obj.x <= this.x + 75 )){
+                player.reset();
+        }
+};
+
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
