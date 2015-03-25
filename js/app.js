@@ -80,8 +80,8 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function(){
-    this.x = 0;
-    this.y = 400;
+    this.x = 200;
+    this.y = 375;
     this.sprite = 'images/char-boy.png';
 };
 
@@ -89,6 +89,9 @@ Player.prototype.update = function (pos) {
     // body...
     this.x;
     this.y; 
+    if (this.y < 0){
+        this.reset();
+    }
 };
 
 Player.prototype.render = function () {
@@ -129,6 +132,10 @@ Player.prototype.avoidWalls =  function (coord,step){
                     break;            
     }
 };
+
+Player.prototype.reset = function(){
+    this.constructor();
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
